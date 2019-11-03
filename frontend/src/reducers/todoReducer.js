@@ -1,7 +1,8 @@
-import { GET_TODOS, DELETE_TODO, ADD_TODO, CLEAR_TODOS } from "../actions/type";
+import { GET_TODOS, DELETE_TODO, ADD_TODO, CLEAR_TODOS ,GET_TODO} from "../actions/types";
 
 const initialState = {
-  todos: []
+  todos: [],
+  todo:{}
 };
 
 export default function (state = initialState, action) {
@@ -11,6 +12,12 @@ export default function (state = initialState, action) {
         ...state,
         todos: action.payload
       };
+    case GET_TODO:
+      return {
+        ...state,
+        todo: action.payload,
+        todos:[]
+      }
     case DELETE_TODO:
       return {
         ...state,

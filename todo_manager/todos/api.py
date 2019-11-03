@@ -6,7 +6,6 @@ class TodoViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated,
     ]
-    # queryset = Todo.objects.all()
     
     serializer_class = TodoSerializer
 

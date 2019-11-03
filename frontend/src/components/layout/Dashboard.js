@@ -4,9 +4,9 @@ import Todos from "./Todos";
 
 export default function Dashboard() {
   return (
-    <div className="container">
+    <Fragment>
       <Form />
       <Todos />
-    </div>
+    </Fragment>
   );
 }

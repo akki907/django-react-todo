@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { addTodo } from "../../actions/todos";
+import { addTodo } from "../../actions/todo";
 
 export class Form extends Component {
   state = {
