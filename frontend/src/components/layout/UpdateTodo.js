@@ -1,25 +1,28 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getTodoById, updateTodo } from "../../actions/todo";
+import { getTodoById, updateTodo ,getCategories } from "../../actions/todo";
 export class UpdateTodo extends Component {
   state = {
     name: "",
     isComplete: "",
     created_at: "",
-    id: ""
+    id: "",
+    category: ""
   };
 
   componentDidMount() {
-    if (this.props.location && this.props.location.query)
-      this.props.getTodoById(this.props.location.query.id);
+      this.props.getTodoById(this.props.match.params.id);
+      if(Object.keys(this.props.categories).length === 0){
+        this.props.getCategories()
+      }
   }
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
     this.props.updateTodo(this.state, this.props.history);
   };
 
-  onChange = e => {
+  onChange = (e) => {
     if (e.target.name === "name") {
       this.setState({ [e.target.name]: e.target.value });
     } else {
@@ -27,13 +30,27 @@ export class UpdateTodo extends Component {
     }
   };
 
+  onChangeSelect = (e) => {
+    this.setState({ category: parseInt(e.target.value) });
+  };
+
+  getOptions = () => {
+    return this.props.categories.map((item) => (
+      <option value={item.id} key={item.id}>
+        {item.name}
+      </option>
+    ));
+  };
+
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.todo) {
       this.setState({
         name: nextProps.todo.name,
         isComplete: nextProps.todo.isComplete,
         id: nextProps.todo.id,
-        created_at: nextProps.todo.created_at
+        created_at: nextProps.todo.created_at,
+        category: nextProps.todo.category
       });
     }
   }
@@ -58,7 +75,14 @@ export class UpdateTodo extends Component {
             </div>
 
             <div className="form-group">
-              <label>Complete</label>
+              <label>Category</label>
+              <select value={this.state.category} onChange={this.onChangeSelect} className="form-control">
+                {this.getOptions()}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>IsComplete</label>
               <input
                 className="form-control"
                 type="checkbox"
@@ -67,6 +91,7 @@ export class UpdateTodo extends Component {
                 defaultChecked={this.state.isComplete}
               />
             </div>
+           
 
             <div className="form-group">
               <button type="submit" className="btn btn-primary">
@@ -82,11 +107,11 @@ export class UpdateTodo extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  todo: state.todos.todo
+const mapStateToProps = (state) => ({
+  todo: state.todos.todo,
+  categories: state.todos.categories,
 });
 
-export default connect(
-  mapStateToProps,
-  { updateTodo, getTodoById }
-)(UpdateTodo);
+export default connect(mapStateToProps, {getCategories , updateTodo, getTodoById })(
+  UpdateTodo
+);

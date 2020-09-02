@@ -1,11 +1,10 @@
-.App {
-  text-align: center;
+.parent-container{
+  margin: 3rem;
 }
-
-.App-logo {
-  height: 40vmin;
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
 }
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

@@ -1,43 +1,32 @@
-import React, { Component } from "react";
+import React, { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import "./App.css";
 import Navbar from "./components/layout/Navbar";
-import Dashboard from "./components/layout/Dashboard";
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
-import PrivateRoute from "./components/common/PrivateRoute";
 import Notifications from "react-notify-toast";
-import { loadUser } from "./actions/auth";
-import UpdateTodo from "./components/layout/UpdateTodo";
+const Dashboard = lazy(() => import("./components/layout/Dashboard"));
+const UpdateTodo = lazy(() => import("./components/layout/UpdateTodo"));
 
-class App extends Component {
-
-  componentDidMount() {
-    store.dispatch(loadUser());
-  }
-
-  render() {
-    return (
-      <Provider store={store}>
+function App() {
+  return (
+    <Provider store={store}>
+      <Suspense fallback={<div>...Loading</div>}>
         <Router>
           <div className="App">
             <Navbar />
             <Notifications />
-            <div className="container">
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/register" component={Register} />
+            <div className="parent-container">
               <Switch>
-                <PrivateRoute exact path="/" component={Dashboard} />
-                <PrivateRoute exact path="/todo/:id" component={UpdateTodo} />
+                <Route exact path="/" component={Dashboard} />
+                <Route exact path="/todo/:id" component={UpdateTodo} />
               </Switch>
             </div>
           </div>
         </Router>
-      </Provider>
-    );
-  }
+      </Suspense>
+    </Provider>
+  );
 }
 
 export default App;
