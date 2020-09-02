@@ -1,16 +1,16 @@
-from todos.models import Todo
-from rest_framework import viewsets,permissions
-from .serializer import TodoSerializer
+from todos.models import Todo, Category
+from rest_framework import viewsets, permissions
+from .serializer import TodoSerializer ,CategorySerializer
+from rest_framework.response import Response
+
 
 class TodoViewSet(viewsets.ModelViewSet):
-    permission_classes = [
-        permissions.IsAuthenticated,
-    ]
-    
+
     serializer_class = TodoSerializer
+    queryset = Todo.objects.all()
 
-    def get_queryset(self):
-        return self.request.user.todos.all()
 
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+class CategoryViewSet(viewsets.ModelViewSet):
+
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
