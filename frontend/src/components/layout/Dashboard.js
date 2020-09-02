@@ -1,12 +1,16 @@
-import React, { Fragment } from "react";
+import React,{memo} from "react";
 import Form from "./Form";
 import Todos from "./Todos";
 
-export default function Dashboard() {
+function Dashboard() {
   return (
-    <Fragment>
-      <Form />
-      <Todos />
-    </Fragment>
+    <>
+        <Form />
+        <Todos />
+    </>
   );
 }
+
+
+export default memo(Dashboard)
+
